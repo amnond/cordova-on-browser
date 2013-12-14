@@ -1,3 +1,5 @@
+//  Copyright 2013 Amnon David (amnon.david@gmail.com)
+
 if (!navigator.compass) {
 	// -------------------------------------------
 	// Compass (device-orientation Cordova plugin)
@@ -103,7 +105,7 @@ window.onload = function() {
 		// Get the HTML string of the main (index.html) Cordova file
 		var page_html = document.documentElement.innerHTML;
 		// Create an iframe, and prepend it to the mail HTML (we do it after getting the
-		// orogonal HTML otherwise we'll have a replay of inception...)
+		// original HTML otherwise we'll have a replay of the inception movie...)
 		var ifrm = document.createElement('iframe');
 		document.body.insertBefore(ifrm, document.body.firstChild);
 
