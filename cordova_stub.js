@@ -1,10 +1,11 @@
 //  Copyright 2013 Amnon David (amnon.david@gmail.com)
 
+
+//------------------------------------------------------------------------------------------
+// Compass (org.apache.cordova.device-orientation
+//------------------------------------------------------------------------------------------
 if (!navigator.compass) {
-	// -------------------------------------------
-	// Compass (device-orientation Cordova plugin)
-	// -------------------------------------------
-	
+
 	navigator.compass = (function() {
 		var nav_compass = this;
 
@@ -59,7 +60,7 @@ if (!navigator.compass) {
 			// compassSuccess callback function.
 
 			setTimeout( function() { compassSuccess( oCompass.getCompassHeading() ) }, 
-				        compassOptions.frequency );
+				        100 );
 		}
 
 		nav_compass.watchHeading = function(compassSuccess, compassError, compassOptions)
@@ -75,10 +76,10 @@ if (!navigator.compass) {
 			// compass.clearWatch to stop watching the compass.
 
 			if (!compassOptions)
-				compassOptions = {frequency:2000};
+				compassOptions = {frequency:100};
 
 			if (!compassOptions.frequency)
-				compassOptions.frequency = 2000;
+				compassOptions.frequency = 100;
 
 
 			return setInterval( function() { compassSuccess( oCompass.getCompassHeading() ) }, 
@@ -94,7 +95,94 @@ if (!navigator.compass) {
 	}) ();
 }
 
-// TODO: Handle case where onload is already used for some reason by the Cordova app code.
+//------------------------------------------------------------------------------------------
+// Accelerometer (org.apache.cordova.device-motion)
+//------------------------------------------------------------------------------------------
+if (!navigator.accelerometer) {
+	
+	navigator.accelerometer = (function() {
+		var nav_accelerometer = this;
+
+		var oAccelerometer = (function() {
+			var self = this;
+
+			self.AccelerometerVals = [9.5, 0.54, -0.51];
+
+	        self.getAcceleration = function() {
+	        	var avals = self.AccelerometerVals;
+	        	var which = Math.floor(Math.random()*3);
+	        	for (var i=0; i<3; i++)
+	        		avals[i] += (Math.random()-0.5)/2.0;
+	        	avals[which] = 0;
+	        	var squares = avals[0]*avals[0]+avals[1]*avals[1]+avals[2]*avals[2];
+	        	var newg = 9.8+(Math.random()-0.5)/4.0;
+	        	newgs = newg * newg;
+	        	if (newgs < squares) {
+	        		var tmp = squares;
+	        		squares = newgs;
+	        		newgs = squares;
+	        	}
+	        	avals[which] = Math.sqrt( newg*newg - squares );
+				// x: Amount of acceleration on the x-axis. (in m/s^2) (Number)
+				// y: Amount of acceleration on the y-axis. (in m/s^2) (Number)
+				// z: Amount of acceleration on the z-axis. (in m/s^2) (Number)
+				// timestamp: Creation timestamp in milliseconds. (DOMTimeStamp)
+	        	var av = {x:avals[0], y:avals[1], z:avals[2]}
+	        	av.timestamp = new Date().getTime();
+	        	return av;
+	        }
+	        return self;
+		})();
+
+		nav_accelerometer.getCurrentAcceleration = function(accelerometerSuccess, accelerometerError)
+		{
+			// The accelerometer is a motion sensor that detects the change (delta)
+			// in movement relative to the current device orientation, in three dimensions
+			// along the x, y, and z axis.
+
+			// These acceleration values are returned to the accelerometerSuccess
+			// callback function.
+
+			setTimeout( function() { accelerometerSuccess( oAccelerometer.getAcceleration() ) }, 
+				        100 );
+		}
+
+		nav_accelerometer.watchAcceleration = function(accelerometerSuccess, accelerometerError, accelerometerOptions)
+		{
+			// The accelerometer.watchAcceleration method retrieves the device's current
+			// acceleration at a regular interval, executing the accelerometerSuccess 
+			// callback function each time. Specify the interval in milliseconds via the
+			// acceleratorOptions object's frequency parameter.
+
+			// The returned watch ID references the accelerometer's watch interval, and
+			// can be used with accelerometer.clearWatch to stop watching the accelerometer.
+			if (!accelerometerOptions)
+				accelerometerOptions = {frequency:10000};
+
+			if (!accelerometerOptions.frequency)
+				accelerometerOptions.frequency = 10000;
+
+
+			return setInterval( function() { accelerometerSuccess( oAccelerometer.getAcceleration() ) }, 
+				        		accelerometerOptions.frequency );
+		}
+
+		nav_accelerometer.clearWatch = function(watchID)
+		{
+			clearInterval(watchID);
+		}
+
+		return nav_accelerometer;
+	}) ();
+}
+
+
+//------------------------------------------------------------------------------------------
+// Relocate the entire Cordova application elements from the main document body to
+// an iFrame with the size of the mobile device
+//------------------------------------------------------------------------------------------
+
+// TODO: Handle cases where onload is already used for some reason by the application code.
 window.onload = function() {
 	if (window == window.parent) {
 		// Check whether we are running on a desktop browser
