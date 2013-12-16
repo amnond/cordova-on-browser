@@ -212,11 +212,12 @@ if (!navigator.accelerometer) {
 
 			// Remove all the UI elements from the parent window where the app originally was so
 			// that all we can see is the iframe and the application within it
-			var items = document.body.getElementsByTagName("*");
+			var items = document.querySelectorAll( 'body > *' );
 			for (var i = items.length-1; i>=0 ; i--) {
 			    var node = items[i];
-			    if (node && node != ifrm)
+			    if (node && node != ifrm) {
 				    document.body.removeChild(node);
+				}
 			}
 		}
 		else {
