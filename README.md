@@ -21,7 +21,7 @@ preferably just above the:
 and that's it - you're ready to go. Just double click the index.html file and watch your phone application run on your browser.
 
 Notes:
-Since this is still a work in progress, Jacascript simulations of more Cordova plugins should be added with time. Currently the following plugin simulations work:
+Since this is still a work in progress, Javascript simulations of more Cordova plugins should be added with time. Currently the following plugin simulations work:
 
 * Accelerometer (org.apache.cordova.device-motion)
 * Compass (org.apache.cordova.device-orientation)
