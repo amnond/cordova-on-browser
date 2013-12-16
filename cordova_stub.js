@@ -181,48 +181,49 @@ if (!navigator.accelerometer) {
 // Relocate the entire Cordova application elements from the main document body to
 // an iFrame with the size of the mobile device
 //------------------------------------------------------------------------------------------
+(function () {
+	var prev_onLoad = window.onload;
+	window.onload = function() {
+		if (typeof(prev_onLoad)=='function')
+			prev_onLoad();
 
-// TODO: Handle cases where onload is already used for some reason by the application code.
-window.onload = function() {
-	if (window == window.parent) {
-		// Check whether we are running on a desktop browser
-		if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry|IEMobile)/))
-			// Assume Cordova is available - abort Cordova browser emulation
-			return;
+		if (window == window.parent) {
+			// Check whether we are running on a desktop browser
+			if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry|IEMobile)/))
+				// Assume Cordova is available - abort Cordova browser emulation
+				return;
 
-		// Get the HTML string of the main (index.html) Cordova file
-		var page_html = document.documentElement.innerHTML;
-		// Create an iframe, and prepend it to the mail HTML (we do it after getting the
-		// original HTML otherwise we'll have a replay of the inception movie...)
-		var ifrm = document.createElement('iframe');
-		document.body.insertBefore(ifrm, document.body.firstChild);
+			// Get the HTML string of the main (index.html) Cordova file
+			var page_html = document.documentElement.innerHTML;
+			// Create an iframe, and prepend it to the mail HTML (we do it after getting the
+			// original HTML otherwise we'll have a replay of the inception movie...)
+			var ifrm = document.createElement('iframe');
+			document.body.insertBefore(ifrm, document.body.firstChild);
 
-		// Set the iframe size (which will simulate the phone size), and write the original
-		// application html contents to this iframe 
-		// TODO: replace this with selectable UI in the parent window.
-		ifrm.width = "320px";
-		ifrm.height = "480px";
-		ifrmw = (ifrm.contentWindow) ? ifrm.contentWindow : (ifrm.contentDocument.document) ? ifrm.contentDocument.document : ifrm.contentDocument;
-		ifrmw.document.open();
-		ifrmw.document.write(page_html);
-		ifrmw.document.close();
+			// Set the iframe size (which will simulate the phone size), and write the original
+			// application html contents to this iframe
+			// TODO: replace this with selectable UI in the parent window.
+			ifrm.width = "320px";
+			ifrm.height = "480px";
+			ifrmw = (ifrm.contentWindow) ? ifrm.contentWindow : (ifrm.contentDocument.document) ? ifrm.contentDocument.document : ifrm.contentDocument;
+			ifrmw.document.open();
+			ifrmw.document.write(page_html);
+			ifrmw.document.close();
 
-		// Remove all the UI elements from the parent window where the app originally was so
-		// that all we can see is the iframe and the application within it
-		var items = document.body.getElementsByTagName("*");
-		for (var i = items.length-1; i>=0 ; i--) {
-		    var node = items[i];
-		    if (node && node != ifrm) {
-		    	console.log( "removing:" + node);
-			    document.body.removeChild(node);
+			// Remove all the UI elements from the parent window where the app originally was so
+			// that all we can see is the iframe and the application within it
+			var items = document.body.getElementsByTagName("*");
+			for (var i = items.length-1; i>=0 ; i--) {
+			    var node = items[i];
+			    if (node && node != ifrm)
+				    document.body.removeChild(node);
 			}
 		}
+		else {
+			// This will only be called for the iframe window if the iframe was created,
+			// and after all the HTML/CSS/JavaScript of the main window were copied to it,
+			// which will only happen if we are running in a browser.
+			onDeviceReady();
+		}
 	}
-	else
-	{
-		// This will only be called for the iframe window if the iframe was created,
-		// and after all the HTML/CSS/JavaScript of the main window were copied to it,
-		// which will only happen if we are running in a browser.
-		onDeviceReady();
-	}
-}
+})();

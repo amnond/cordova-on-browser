@@ -5,17 +5,15 @@ Simple and painless way to test Cordova applications on a desktop browser. The g
 
 ### Using cordova-on-browser
 
-Simple: In a cordova project, there's the index.html file. First, copy the cordova_stub.js file included in this project to the same directory as your project's www/index.html file. Now in index.html, there's this line:
+Simple: In a cordova project, there's the index.html file. First, copy the cordova_stub.js file included in this project to the same directory as your project's www/index.html file. Now in index.html add the inclusion of cordova_stub.js (preferably just above the </body> tag), i.e:
+
 
 ```javascript
-<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
-```
-
-Below this line, just add the inclusion of cordova_stub.js, like so:
-
-```javascript
-<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
 <script type="text/javascript" charset="utf-8" src="cordova_stub.js"></script>
+```
+preferably just above the:
+```html
+</body>
 ```
 
 and that's it - you're ready to go. Just double click the index.html file and watch your phone application run on your browser.

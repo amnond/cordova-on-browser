@@ -4,8 +4,8 @@
     <title>Compass Example</title>
 
     <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
-    <script type="text/javascript" charset="utf-8" src="cordova_stub.js"></script>
     <script type="text/javascript" charset="utf-8">
+    window.onload = function() {alert('hi');}
 
     // The watch id references the current `watchHeading`
     var watchID = null;
@@ -58,5 +58,7 @@
     <div id="heading">Waiting for heading...</div>
     <button onclick="startWatch();">Start Watching</button>
     <button onclick="stopWatch();">Stop Watching</button>
+
+    <script type="text/javascript" charset="utf-8" src="cordova_stub.js"></script>
   </body>
 </html>
