@@ -4,8 +4,11 @@
 // A quick hack to enable audio play (org.apache.cordova.media)
 //------------------------------------------------------------------------------------------
 if (typeof(Media)=='undefined')
+{
 	Media = Audio;
-
+	Media.prototype.stop = function() { return; }
+	Media.prototype.release = function() { return; }
+}
 
 //------------------------------------------------------------------------------------------
 // Compass (org.apache.cordova.device-orientation)
