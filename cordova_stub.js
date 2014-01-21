@@ -1,8 +1,14 @@
 //  Copyright 2013 Amnon David (amnon.david@gmail.com)
 
+//------------------------------------------------------------------------------------------
+// A quick hack to enable audio play (org.apache.cordova.media)
+//------------------------------------------------------------------------------------------
+if (typeof(Media)=='undefined')
+	Media = Audio;
+
 
 //------------------------------------------------------------------------------------------
-// Compass (org.apache.cordova.device-orientation
+// Compass (org.apache.cordova.device-orientation)
 //------------------------------------------------------------------------------------------
 if (!navigator.compass) {
 
