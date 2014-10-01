@@ -1,6 +1,21 @@
 //  Copyright 2013 Amnon David (amnon.david@gmail.com)
 
 //------------------------------------------------------------------------------------------
+// A quick hack to to accept LowLatencyAudio plugin
+//------------------------------------------------------------------------------------------
+if (typeof(LowLatencyAudio)=='undefined')
+{
+	LowLatencyAudio = {
+		preloadFX: function ( id, assetPath, success, fail) {},
+		preloadAudio: function ( id, assetPath, voices, success, fail) {},
+		play: function (id, success, fail) {},
+		stop: function (id, success, fail) {},
+		loop: function (id, success, fail) {},
+		unload: function (id, success, fail) {}
+	}
+}
+
+//------------------------------------------------------------------------------------------
 // A quick hack to enable audio play (org.apache.cordova.media)
 //------------------------------------------------------------------------------------------
 if (typeof(Media)=='undefined')
@@ -9,7 +24,6 @@ if (typeof(Media)=='undefined')
 	Media.prototype.stop = function() { return; }
 	Media.prototype.release = function() { return; }
 }
-
 //------------------------------------------------------------------------------------------
 // Compass (org.apache.cordova.device-orientation)
 //------------------------------------------------------------------------------------------
@@ -212,6 +226,10 @@ if (!navigator.accelerometer) {
 			// Set the iframe size (which will simulate the phone size), and write the original
 			// application html contents to this iframe
 			// TODO: replace this with selectable UI in the parent window.
+
+			// iPad
+			// ifrm.width = "768px";
+			// ifrm.height = "1004px";
 			ifrm.width = "320px";
 			ifrm.height = "480px";
 			ifrmw = (ifrm.contentWindow) ? ifrm.contentWindow : (ifrm.contentDocument.document) ? ifrm.contentDocument.document : ifrm.contentDocument;
@@ -228,6 +246,10 @@ if (!navigator.accelerometer) {
 				    document.body.removeChild(node);
 				}
 			}
+			// reset the background color of the browser window that contains the iframe
+			document.body.style.backgroundColor='#ffffff';
+			document.body.style.backgroundImage='none';
+
 		}
 		else {
 			// This will only be called for the iframe window if the iframe was created,
